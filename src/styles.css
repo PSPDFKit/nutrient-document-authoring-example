@@ -1,0 +1,307 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body,
+#root {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-family: Arial, Helvetica, sans-serif;
+	display: block;
+}
+
+* {
+	box-sizing: border-box;
+	border-width: 0;
+	border-style: solid;
+}
+
+html,
+body,
+body > #root {
+	height: 100%;
+}
+
+.app-header {
+	position: relative;
+	z-index: 100;
+	background-color: #1a1414;
+}
+
+.app-header > menu {
+	display: flex;
+	margin: 0px;
+
+	padding-left: 1rem;
+	padding-right: 1rem;
+
+	padding-top: 0.75rem;
+	padding-bottom: 0.75rem;
+
+	align-items: center;
+	justify-content: space-between;
+
+	& .links {
+		display: flex;
+	}
+
+	& .link {
+		color: rgb(194, 184, 174);
+	}
+
+	& .link:hover {
+		color: rgb(232, 226, 219);
+	}
+
+	& .nav-link {
+		line-height: 1.25rem;
+		text-decoration: inherit;
+		text-align: center;
+		font-size: 0.7rem;
+		padding: 0.375rem 1.5rem;
+		text-transform: uppercase;
+		letter-spacing: 0.03rem;
+	}
+
+	& .nav-link[aria-current='page'] {
+		color: #ffffff;
+	}
+
+	& .nav-link:focus-visible {
+		/* Transparent outline keeps a native focus ring in forced-colors mode. */
+		outline: 2px solid transparent;
+		outline-offset: -2px;
+		box-shadow: inset 0 -2px 0 currentColor;
+		color: rgb(232, 226, 219);
+	}
+
+	& .learn-more {
+		border: 1px solid #c2b8ae;
+		border-radius: 0.5rem;
+		color: #c2b8ae;
+	}
+
+	& .contact-sales {
+		border-radius: 0.5rem;
+		color: #1a1414;
+		background-color: #c2b8ae;
+	}
+}
+
+.examples-menu {
+	position: relative;
+	display: inline-flex;
+}
+
+.app-header .examples-menu-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+	font-family: inherit;
+}
+
+.examples-menu-caret {
+	transition: transform 150ms ease;
+}
+
+.examples-menu-button[aria-expanded='true'] .examples-menu-caret {
+	transform: rotate(180deg);
+}
+
+.examples-menu-list {
+	position: absolute;
+	top: calc(100% + 0.375rem);
+	left: 0.75rem;
+	z-index: 40;
+	min-width: 13rem;
+	padding: 0.375rem;
+	background: #ffffff;
+	border: 1px solid #d4cdc5;
+	border-radius: 0.25rem;
+	box-shadow:
+		0 1px 2px rgba(26, 20, 20, 0.08),
+		0 6px 16px rgba(26, 20, 20, 0.14);
+}
+
+.examples-menu-item {
+	display: block;
+	padding: 0.5rem 0.75rem;
+	border-radius: 0.125rem;
+	color: #1a1414;
+	font-size: 0.75rem;
+	line-height: 1.25rem;
+	letter-spacing: 0.02em;
+	text-decoration: none;
+}
+
+.examples-menu-item:hover,
+.examples-menu-item:focus-visible {
+	background: #efe9e2;
+	color: #000000;
+}
+
+.examples-menu-item:focus-visible {
+	outline: 2px solid #1a1414;
+	outline-offset: -2px;
+}
+
+.examples-menu-item[aria-current='page'] {
+	font-weight: 700;
+}
+
+.app-content {
+	position: relative;
+	min-height: 0;
+}
+
+.header-actions,
+.marketing-controls,
+.document-controls {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.header-actions,
+.document-controls {
+	margin-left: auto;
+}
+
+.document-controls {
+	flex-shrink: 0;
+	min-width: 0;
+}
+
+.view-source {
+	appearance: none;
+	padding: 0.4rem 0.7rem;
+	border: 1px solid #e0dad3;
+	border-radius: 6px;
+	background: #ffffff;
+	color: #1a1414;
+	font: inherit;
+	font-size: 0.75rem;
+	line-height: 1;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.view-source:focus-visible {
+	outline: 2px solid #c2b8ae;
+	outline-offset: 2px;
+}
+
+.app-header .view-source {
+	border-color: #c2b8ae;
+	border-radius: 0.5rem;
+	background: transparent;
+	color: #c2b8ae;
+}
+
+.embed-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.75rem;
+	min-height: 2.5rem;
+	padding: 0.5rem 0.875rem;
+	border-bottom: 1px solid #e0dad3;
+	background: #faf8f6;
+	color: #1a1414;
+	font-size: 0.8125rem;
+	font-weight: 700;
+}
+
+.embed-toolbar .view-source-compact {
+	padding: 0.3rem 0.55rem;
+	border-radius: 5px;
+	background: transparent;
+	color: #7a5c2e;
+	font-size: 0.75rem;
+	font-weight: 600;
+}
+
+.app-header .nav-link[aria-disabled='true'],
+.app-header .examples-menu-button:disabled {
+	color: #847c74;
+	cursor: not-allowed;
+	opacity: 0.7;
+}
+
+@media only screen and (max-width: 900px) {
+	.app-header > menu {
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		padding: 0.5rem 0.75rem;
+	}
+
+	.app-header > menu > div:first-child {
+		min-width: 0;
+		flex: 1;
+	}
+
+	.app-header img {
+		width: 118px;
+		height: auto;
+	}
+
+	.app-header .links {
+		position: relative;
+		display: flex;
+		flex: 1;
+		min-width: 0;
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.app-header .links > div:first-child,
+	.app-header .links > span:last-child {
+		display: none;
+	}
+
+	.app-header .nav-link {
+		flex: none;
+		padding: 0.5rem 0.75rem;
+		white-space: nowrap;
+	}
+
+	.marketing-controls {
+		display: none;
+	}
+
+	.header-actions {
+		flex: none;
+	}
+}
+
+@media only screen and (max-width: 560px) {
+	.app-header > menu > div:first-child {
+		flex-basis: 100%;
+		flex-wrap: wrap;
+	}
+
+	.header-actions {
+		position: absolute;
+		top: 0.5rem;
+		right: 0.75rem;
+	}
+
+	.app-header .links {
+		flex-basis: 100%;
+		order: 2;
+	}
+
+	.view-source,
+	.embed-toolbar .view-source-compact,
+	.app-header .nav-link,
+	.app-header .examples-menu-button {
+		min-width: 44px;
+		min-height: 44px;
+	}
+}

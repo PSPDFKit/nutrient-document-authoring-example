@@ -1,0 +1,17 @@
+{
+	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"installCommand": "npm ci",
+	"functions": {
+		"api/chat.js": {
+			"maxDuration": 300,
+			"includeFiles": "node_modules/@nutrient-sdk/document-authoring/lib/*.{json,wasm}"
+		}
+	},
+	"rewrites": [
+		{
+			"source": "/((?!api/).*)",
+			"destination": "/index.html"
+		}
+	],
+	"buildCommand": "npm run build"
+}

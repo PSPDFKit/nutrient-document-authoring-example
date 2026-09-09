@@ -1,0 +1,33 @@
+.dropzone-wrapper {
+	background-color: #f5f3f0;
+	border: 2px dashed #c2b8ae;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	padding: 2rem;
+	width: 400px;
+	height: 200px;
+	display: flex;
+	position: relative;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	color: #444;
+	transition:
+		border-color 0.15s,
+		background-color 0.15s;
+}
+
+.dropzone-wrapper:hover {
+	border-color: #999;
+	background-color: #eceae7;
+}
+
+.errorDiv {
+	position: absolute;
+	background-color: #f68b8b;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	text-align: center;
+	padding: 1rem;
+}

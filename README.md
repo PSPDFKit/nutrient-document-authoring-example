@@ -1,39 +1,32 @@
-# Document Authoring AI Example
+# Nutrient Document Authoring demo
 
-A Next.js app that connects the [Nutrient Document Authoring SDK](https://www.nutrient.io/sdk/document-authoring/) to a language model through [`@nutrient-sdk/document-authoring-ai`](https://www.npmjs.com/package/@nutrient-sdk/document-authoring-ai) and the [Vercel AI SDK](https://ai-sdk.dev).
+This is the unified public demo for Document Authoring and its AI Assistant. Clone [the public source repository](https://github.com/PSPDFKit/nutrient-document-authoring-example) and build it independently with Node.js 22.12+ or 24 and npm. It uses published SDK 1.21.0 and AI 2.0.0 packages.
 
-The app has four tabs, covering the two ways to integrate Document Authoring AI.
-
-The AI Legal Assistant tab is open-ended tool calling. The model receives document tools, decides which ones to call, and the browser executes those calls against the live editor. The assistant panel has sample legal prompts for review questions and draft revisions. Draft revision shortcuts switch the editor to Review mode before sending the prompt, so write tools propose tracked changes. The assistant panel also has an "Add notes explaining AI edits" checkbox. While it is checked, the server requires a `reviewComment` note on every write tool call, and the browser creates a document comment thread from each note. While it is unchecked, `reviewComment` is not part of the tool schema the model sees.
-
-The Proofreading, Translation, and Template Builder tabs are structured workflows. The browser reads a workflow input snapshot from the editor, the server asks the model for a single structured workflow output object, and the browser applies that output through `toolkit.applyWorkflowOutput(...)`. Selection-scoped Proofreading and Translation edits can be applied in Review mode; document-scoped workflow output replaces the current document directly. Template Builder loads a static contract sample beside a fixed field catalog, asks the model to replace hardcoded contract values with reusable `{{field.path}}` placeholders, and lets you apply the suggestions one at a time or all at once.
-
-## Run
+[Try the demo](https://document-authoring-demo.nutrient.io/). The basic SDK integration examples linked from npm are a separate project: [Document Authoring SDK examples](https://github.com/PSPDFKit/pspdfkit-document-authoring-example).
 
 ```sh
+git clone https://github.com/PSPDFKit/nutrient-document-authoring-example.git
+cd nutrient-document-authoring-example
 npm ci
-cp .env.sample .env.local
+npm run typecheck
+npm run build
 npm run dev
 ```
 
-The example installs the stable `@nutrient-sdk/document-authoring` package from npm and uses the SDK's default CDN-hosted assets.
+The build produces the browser app in `dist/` and the Vercel chat handler in `server/chat.mjs`. SDK assets load from its versioned public CDN. Sample documents live in `src/samples/`.
 
-Set `OPENAI_API_KEY` in `.env.local` before using the assistant. Optionally set `NEXT_PUBLIC_DOCUMENT_AUTHORING_LICENSE_KEY` to run Document Authoring with your SDK license instead of evaluation behavior. If you're interested in a Document Authoring license, [contact sales](https://www.nutrient.io/contact-sales/). The example defaults to `gpt-5.4-mini`.
+The app is a single page. Every route serves `index.html` (Vite's SPA fallback locally, a rewrite in `vercel.json` on Vercel) and the client reads the path to pick the document experience. The root route opens Legal Assistant. Use `/blank/`, `/upload/`, or `/examples/<name>/` for a specific document experience. Embedded views use the same app at `/embed/`; choose the initial experience with `?experience=<name>` and hide the source link with `&viewSource=false`.
+
+AI requests use `OPENAI_API_KEY`. Set `DOCUMENT_AUTHORING_DEMO_OPENAI_MODEL` only when you need to override the demo's default model.
+
+Structured workflows send the active SDK fragment contract with their input, and the server uses that contract to build request-specific output guidance.
+
+Vercel uses `npm ci` and `npm run build` from this directory. Configure `OPENAI_API_KEY` in the server environment. For local AI requests, export it in the shell before `npm run dev`. The browser uses hostname-specific demo licenses; other hosts use the SDK evaluation mode.
+
+The server validates workflow input and output through the published Node SDK, and the editor validates replacements again before applying them. Run `npm test` for browser regression coverage; those tests stub model responses.
+
+The Vercel function explicitly includes the Node SDK runtime assets from its npm package. These files are loaded dynamically and are not all discovered by serverless file tracing.
 
 ## Sample documents
 
-The AI Legal Assistant document is the [Common Paper Mutual NDA](https://commonpaper.com/standards/mutual-nda/) Cover Page & Standard Terms DOCX in `public/sample.docx`. Common Paper releases its agreements under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The app imports that DOCX directly so the demo starts from the original contract text and formatting.
-
-The Proofreading sample is a fictional 72-hour breach response quick guide DOCX in `public/proofreading-sample.docx`, adapted from the Information Commissioner's Office guidance under the Open Government Licence v3.0. The Translation sample is a polished NIST CSF 2.0 small-business overview DOCX in `public/translation-sample.docx`; it keeps the previous sample content while using document formatting that better showcases layout preservation. The Translation tab loads the English sample and translates it to English, German, French, or Spanish. Spanish is preselected.
-
-The Template Builder contract is `public/template-fields-contract-sample.txt`.
-
-## Tests
-
-Run the basic Playwright checks without a model provider:
-
-```sh
-npm test
-```
-
-The tests start the Next.js app and verify the use-case panels, the assistant chat request wiring, and a full workflow round trip against a mocked `/api/chat` endpoint.
+The Legal Assistant uses the Common Paper Mutual NDA, released under CC BY 4.0. The proofreading sample adapts Information Commissioner’s Office guidance under the Open Government Licence v3.0. The translation sample uses the NIST CSF 2.0 small-business overview.
