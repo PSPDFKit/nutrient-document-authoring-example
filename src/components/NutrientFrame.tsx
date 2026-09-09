@@ -113,7 +113,15 @@ export const NutrientFrame = (props: NutrientFrameProps) => {
 		<div className="app-frame" style={{ display: 'flex', flexFlow: 'column', height: '100%' }}>
 			{props.embedded ? (
 				<div className="embed-toolbar" aria-label="Embedded document controls">
-					<span>Document Authoring</span>
+					<a
+						href="/"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="view-source view-source-compact"
+						aria-label="Explore all examples (opens in a new tab)"
+					>
+						Explore all examples ↗
+					</a>
 					{props.showViewSource !== false ? <ViewSource compact /> : null}
 				</div>
 			) : (
