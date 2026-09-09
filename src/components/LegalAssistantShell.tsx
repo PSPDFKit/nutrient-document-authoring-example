@@ -51,6 +51,8 @@ export type LegalAssistantPanelProps = {
 	reviewComments: boolean;
 	onReviewCommentsChange: (enabled: boolean) => void;
 	onSubmit: () => void;
+	onApplySelection?: () => void;
+	selectionScope?: string;
 	onShortcut: (shortcut: LegalAssistantShortcut) => void;
 	busy: boolean;
 	busyText?: string;
