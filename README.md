@@ -17,6 +17,8 @@ The build produces the browser app in `dist/` and the Vercel chat handler in `se
 
 The app is a single page. Every route serves `index.html` (Vite's SPA fallback locally, a rewrite in `vercel.json` on Vercel) and the client reads the path to pick the document experience. The root route opens Legal Assistant. Use `/blank/`, `/upload/`, or `/examples/<name>/` for a specific document experience. Embedded views use the same app at `/embed/`; choose the initial experience with `?experience=<name>` and hide the source link with `&viewSource=false`.
 
+Legal Assistant and the generic AI Assistant show the selected text and an **Apply to selection** action when text is selected. This action uses the selection workflow and respects the editor's Edit or Review mode.
+
 AI requests use `OPENAI_API_KEY`. Set `DOCUMENT_AUTHORING_DEMO_OPENAI_MODEL` only when you need to override the demo's default model.
 
 Structured workflows send the active SDK fragment contract with their input, and the server uses that contract to build request-specific output guidance.

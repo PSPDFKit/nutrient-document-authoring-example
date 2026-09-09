@@ -356,3 +356,29 @@ test('proofreading follows the current selection', async ({ page }) => {
 	await page.keyboard.press('ArrowRight');
 	await expect(page.getByRole('button', { name: 'Review Document', exact: true })).toBeVisible();
 });
+
+test('embedded Legal Assistant can apply a prompt to selected text', async ({ page }) => {
+	const requests = await mockAssistant(page);
+	await page.goto('/embed/?experience=legal-assistant');
+	await rememberEditorHost(page);
+	const panel = page.getByRole('region', { name: 'Legal Assistant' });
+	const applySelection = panel.getByRole('button', { name: 'Apply to selection' });
+	await expect(applySelection).toBeHidden();
+
+	const title = page.getByTestId('document-editor-host');
+	await expect(page.getByRole('button', { name: 'Editor mode' })).toHaveText('Review');
+	await title.dblclick({ position: { x: 160, y: 250 } });
+	await expect(panel.locator('.assistant-scope')).toContainText('Mutual');
+	await expect(applySelection).toBeVisible();
+	await panel.getByRole('textbox', { name: 'Ask assistant' }).fill('Keep this wording.');
+	await expect(applySelection).toBeEnabled();
+	await applySelection.click();
+	await expect(panel.getByText('Applied the requested change to the selected content.')).toBeVisible();
+	expect(requests).toHaveLength(1);
+	expect(requests[0]).toMatchObject({ useCase: 'generic', task: 'Keep this wording.', workflowInput: { scope: 'selection' } });
+	await expect(page.getByRole('button', { name: 'Editor mode' })).toHaveText('Review');
+
+	await title.click({ position: { x: 160, y: 250 } });
+	await expect(panel.locator('.assistant-scope')).toBeHidden();
+	await expect(applySelection).toBeHidden();
+});

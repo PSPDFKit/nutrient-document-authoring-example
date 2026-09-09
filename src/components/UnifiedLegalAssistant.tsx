@@ -429,7 +429,7 @@ export const UnifiedLegalAssistant = () => {
 		setWorkflow({});
 		lastSubmittedPromptRef.current = prompt;
 		setInput('');
-		if (experience.panel === 'generic' && applyToSelection) {
+		if (applyToSelection) {
 			const userMessage: UIMessage = { id: crypto.randomUUID(), role: 'user', parts: [{ type: 'text', text: prompt }] };
 			setMessages((current) => [...current, userMessage]);
 			void runWorkflow('generic', prompt, 'selection', 'Applying your request to the selected content…').then((applied) => {
@@ -508,6 +508,8 @@ export const UnifiedLegalAssistant = () => {
 					reviewComments={reviewComments === 'create'}
 					onReviewCommentsChange={(enabled) => setReviewComments(enabled ? 'create' : 'disabled')}
 					onSubmit={() => submitPrompt(input)}
+					onApplySelection={scope ? () => submitPrompt(input, true) : undefined}
+					selectionScope={scope}
 					onShortcut={(shortcut: LegalAssistantShortcut) => submitPrompt(shortcut.prompt)}
 					busy={assistantBusy}
 					busyText={assistantBusyText}
