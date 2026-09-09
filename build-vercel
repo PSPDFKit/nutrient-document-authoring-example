@@ -1,0 +1,13 @@
+#!/usr/bin/env -S bash -e -x -u -o pipefail
+
+npx esbuild src/server/chat.ts \
+	--bundle \
+	--platform=node \
+	--format=esm \
+	--packages=external \
+	--target=node20 \
+	--outfile=server/chat.mjs
+
+node --no-experimental-require-module scripts/verify-chat-entrypoint.mjs
+
+npx vite build "$@"

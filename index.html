@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta name="description" content="Document Authoring SDK by Nutrient" />
+		<link rel="preload" as="image" href="/icons/logo.svg" />
+		<title>Document Authoring SDK: Nutrient</title>
+		<script>
+			// Embedded views (/embed/...) do not report analytics.
+			if (!location.pathname.startsWith('/embed')) {
+				window.dataLayer = window.dataLayer || [];
+				window.dataLayer.push(['js', new Date()], ['config', 'G-9CK7HJ0NYE']);
+				const gtag = document.createElement('script');
+				gtag.async = true;
+				gtag.src = 'https://www.googletagmanager.com/gtag/js?id=G-9CK7HJ0NYE';
+				const plausible = document.createElement('script');
+				plausible.defer = true;
+				plausible.dataset.domain = 'document-authoring-demo.nutrient.io';
+				plausible.src = 'https://plausible.io/js/script.js';
+				document.head.append(gtag, plausible);
+			}
+		</script>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module" src="/src/main.tsx"></script>
+	</body>
+</html>

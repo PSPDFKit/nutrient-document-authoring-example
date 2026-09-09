@@ -1,27 +1,19 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const baseURL = 'http://127.0.0.1:3101';
-
 export default defineConfig({
 	testDir: './tests',
-	forbidOnly: !!process.env.CI,
+	fullyParallel: false,
 	retries: process.env.CI ? 2 : 0,
-	workers: process.env.CI ? 1 : undefined,
-	reporter: 'html',
+	workers: 1,
+	reporter: 'list',
 	use: {
-		baseURL,
+		baseURL: 'http://127.0.0.1:5174',
 		trace: 'on-first-retry',
 	},
-	projects: [
-		{
-			name: 'chromium',
-			use: { ...devices['Desktop Chrome'] },
-		},
-	],
+	projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
 	webServer: {
-		command: 'npm run dev -- --hostname 127.0.0.1 --port 3101',
-		url: baseURL,
-		timeout: 180 * 1000,
+		command: 'npx vite serve --host 127.0.0.1 --port 5174',
+		url: 'http://127.0.0.1:5174',
 		reuseExistingServer: !process.env.CI,
 	},
 });
