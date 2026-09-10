@@ -597,6 +597,7 @@ export const UnifiedLegalAssistant = () => {
 			<AssistantShell
 				title={heading.title}
 				description={heading.description}
+				available={experience.id !== 'upload' || uploadedDocumentReady}
 				open={panelOpen}
 				onOpen={() => setPanelOpen(true)}
 				onClose={() => setPanelOpen(false)}

@@ -39,6 +39,7 @@ export type AssistantShellProps = PropsWithChildren<
 	AssistantShellNavProps & {
 		title: string;
 		description: string;
+		available: boolean;
 		open: boolean;
 		onOpen: () => void;
 		onClose: () => void;
@@ -109,7 +110,7 @@ export const AssistantShell = (props: AssistantShellProps) => {
 			navigationDisabled={props.navigationDisabled}
 		>
 			<div ref={shellRef} className="legal-assistant-shell" style={shellStyle}>
-				{props.open ? (
+				{!props.available ? null : props.open ? (
 					<>
 						<section ref={panelRef} className="legal-assistant-panel" aria-label={props.title}>
 							<header className="legal-assistant-heading">

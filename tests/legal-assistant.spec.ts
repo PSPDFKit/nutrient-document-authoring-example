@@ -249,6 +249,13 @@ test('Examples use stable routes, focused panels, and one editor lifecycle', asy
 	await expectSameEditorHost(editorHost);
 });
 
+test('empty upload screen has no assistant controls', async ({ page }) => {
+	await page.goto('/upload/');
+	await rememberEditorHost(page);
+	await expect(page.getByRole('region', { name: 'AI Assistant' })).toBeHidden();
+	await expect(page.getByRole('button', { name: 'Open AI Assistant' })).toBeHidden();
+});
+
 test('blank documents keep the assistant optional and uploads open it after import', async ({ page }) => {
 	const requests = await mockAssistant(page, { failFirstRequest: true, delayMs: 100 });
 	await page.goto('/blank/');
@@ -274,8 +281,9 @@ test('blank documents keep the assistant optional and uploads open it after impo
 	expect(requests).toHaveLength(2);
 
 	await page.getByRole('link', { name: 'Upload Document' }).click();
-	await expect(page).toHaveURL(/\/upload\/$/);
 	await expect(page.getByRole('region', { name: 'AI Assistant' })).toBeHidden();
+	await expect(page.getByRole('button', { name: 'Open AI Assistant' })).toBeHidden();
+	await expect(page).toHaveURL(/\/upload\/$/);
 	await page.locator('input[type="file"]').setInputFiles({
 		name: 'visitor-notes.txt',
 		mimeType: 'text/plain',
@@ -288,6 +296,8 @@ test('blank documents keep the assistant optional and uploads open it after impo
 
 	await editDocument(page);
 	await page.getByRole('link', { name: 'Upload Document' }).click();
+	await expect(page.getByRole('region', { name: 'AI Assistant' })).toBeHidden();
+	await expect(page.getByRole('button', { name: 'Open AI Assistant' })).toBeHidden();
 	await page.locator('input[type="file"]').setInputFiles({
 		name: 'replacement-notes.txt',
 		mimeType: 'text/plain',
@@ -299,6 +309,8 @@ test('blank documents keep the assistant optional and uploads open it after impo
 	await expect(page.getByRole('region', { name: 'AI Assistant' })).toBeVisible();
 
 	await page.getByRole('link', { name: 'Upload Document' }).click();
+	await expect(page.getByRole('region', { name: 'AI Assistant' })).toBeHidden();
+	await expect(page.getByRole('button', { name: 'Open AI Assistant' })).toBeHidden();
 	await page.locator('input[type="file"]').setInputFiles({
 		name: 'replacement-notes.txt',
 		mimeType: 'text/plain',
@@ -326,7 +338,7 @@ test('blank documents keep the assistant optional and uploads open it after impo
 	await page.goto('/embed/custom/');
 	await rememberEditorHost(page);
 	await expect(page.getByRole('region', { name: 'AI Assistant' })).toBeHidden();
-	await expect(page.getByRole('button', { name: 'Open AI Assistant' })).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Open AI Assistant' })).toBeHidden();
 });
 
 test('focused workflows retry once with the validator feedback', async ({ page }) => {
